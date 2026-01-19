@@ -20,8 +20,8 @@
 
       <template #extension>
         <div class="w-100 d-flex justify-center">
-          <v-btn v-for="item in menuItems" :key="item" variant="text">
-            {{ item }}
+          <v-btn v-for="item in menuItems" :key="item" :to="item.path" variant="text">
+            {{ item.title }}
           </v-btn>
         </div>
       </template>
@@ -57,13 +57,13 @@
 </template>
 
 <script setup>
-const menuItems = [
-  '首頁',
-  '甲蟲飼育',
-  'BEKUWA兜鍬世界紀錄',
-  '日常蟲事',
-  '蟲友分享',
-  '商店',
-  '關於本站'
-]
+  const menuItems = [
+    { title: '首頁', path: '/' },
+    { title: '甲蟲飼育', path: '/articles' },
+    { title: 'BEKUWA 紀錄', path: '/records' },
+    { title: '日常蟲事', path: '/daily' },
+    { title: '蟲友分享', path: '/share' },
+    { title: '商店', path: '/shop' },
+    { title: '關於本站', path: '/about' },
+  ]
 </script>

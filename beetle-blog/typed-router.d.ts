@@ -19,6 +19,12 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
+    '/AboutView': RouteRecordInfo<'/AboutView', '/about', Record<never, never>, Record<never, never>>,
+    '/ArticlesView': RouteRecordInfo<'/ArticlesView', '/articles', Record<never, never>, Record<never, never>>,
+    '/DailyView': RouteRecordInfo<'/DailyView', '/daily', Record<never, never>, Record<never, never>>,
+    '/RecordView': RouteRecordInfo<'/RecordView', '/records', Record<never, never>, Record<never, never>>,
+    '/ShareView': RouteRecordInfo<'/ShareView', '/share', Record<never, never>, Record<never, never>>,
+    '/ShopView': RouteRecordInfo<'/ShopView', '/shop', Record<never, never>, Record<never, never>>,
   }
 
   /**
@@ -34,6 +40,30 @@ declare module 'vue-router/auto-routes' {
   export interface _RouteFileInfoMap {
     'src/pages/index.vue': {
       routes: '/'
+      views: never
+    }
+    'src/pages/AboutView.vue': {
+      routes: '/AboutView'
+      views: never
+    }
+    'src/pages/ArticlesView.vue': {
+      routes: '/ArticlesView'
+      views: never
+    }
+    'src/pages/DailyView.vue': {
+      routes: '/DailyView'
+      views: never
+    }
+    'src/pages/RecordView.vue': {
+      routes: '/RecordView'
+      views: never
+    }
+    'src/pages/ShareView.vue': {
+      routes: '/ShareView'
+      views: never
+    }
+    'src/pages/ShopView.vue': {
+      routes: '/ShopView'
       views: never
     }
   }
