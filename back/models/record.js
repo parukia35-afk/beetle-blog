@@ -4,8 +4,6 @@ const recordSchema = new Schema({
   genus: {
     type: String,
     required: [true, "屬名必填"],
-    unique:true,
-    sparse: true, // 允許存在多筆空值而不觸發 unique 的檢查(如果這筆資料的這個欄位是空的，就不要把它放進唯一性的檢查清單裡。)
   },
   commonName: {
     type: String,
