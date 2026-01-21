@@ -1,96 +1,95 @@
 <template>
-  <v-container class="py-10">
-    <div class="text-center mb-15">
-      <h1 class="text-h2 font-weight-black mb-4">BEKUWA 飼育紀錄全集</h1>
-      <p class="text-subtitle-1 text-grey-darken-1">精確紀錄每一筆世界最強鍬形蟲的巔峰數據</p>
-      <v-divider class="mx-auto mt-4" width="100" thickness="3" color="primary"></v-divider>
+  <v-container
+    :class="{ 'px-2': $vuetify.display.xs, 'px-10': $vuetify.display.md }"
+    style="max-width: 1200px"
+    class="pb-15 mt-md-16 mt-8"
+  >
+    <v-row class="mb-8 mb-md-12">
+      <v-col class="text-center">
+        <h1
+          :class="$vuetify.display.xs ? 'text-h4' : 'text-h2'"
+          class="font-weight-black"
+          style="letter-spacing: 2px"
+        >
+          世界鍬形蟲最大紀錄2026
+
+        </h1>
+        <v-divider class="mx-auto mt-4" width="60" thickness="4" color="primary"></v-divider>
+      </v-col>
+    </v-row>
+
+    <div v-for="(group, genus) in genusClassification" :key="genus" class="mb-10 mb-md-16">
+      <v-sheet
+        color="grey-darken-3"
+        theme="dark"
+        :class="$vuetify.display.xs ? 'pa-3' : 'pa-5'"
+        class="rounded-t-xl d-flex align-center"
+      >
+        <v-icon
+          icon="mdi-bug"
+          color="primary"
+          :class="$vuetify.display.xs ? 'mr-2' : 'mr-4'"
+          :size="$vuetify.display.xs ? '24' : '36'"
+        ></v-icon>
+        <h2 :class="$vuetify.display.xs ? 'text-h6' : 'text-h4'" class="font-weight-bold">
+          {{ genus }}
+        </h2>
+        <v-spacer></v-spacer>
+        <v-chip
+          color="primary"
+          variant="elevated"
+          class="font-weight-black"
+          :size="$vuetify.display.xs ? 'small' : 'large'"
+        >
+          <v-icon start icon="mdi-database-outline" class="d-none d-sm-inline-flex"></v-icon>
+          {{ group.length }} 筆
+        </v-chip>
+      </v-sheet>
+
+      <v-card border flat class="rounded-b-xl overflow-hidden">
+        <v-table hover :density="$vuetify.display.xs ? 'compact' : 'comfortable'">
+          <thead>
+            <tr class="bg-grey-lighten-4">
+              <th class="font-weight-bold">中文俗名</th>
+              <th class="font-weight-bold">學名</th>
+              <th class="text-center font-weight-bold">飼育</th>
+              <th class="text-center font-weight-bold d-none d-sm-table-cell">野生</th>
+              <th class="text-left font-weight-bold d-none d-md-table-cell">日文名稱</th>
+              <th class="text-center font-weight-bold d-none d-sm-table-cell">登錄年</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in group" :key="item._id">
+              <td
+                :class="$vuetify.display.xs ? 'text-body-1' : 'text-h6'"
+                class="font-weight-bold text-primary"
+              >
+                {{ shouldShowName(group, index) ? item.commonName : '' }}
+              </td>
+
+              <td class="font-italic text-grey-darken-2 text-caption text-sm-body-2">
+                {{ item.scientificName }}
+              </td>
+
+              <td class="text-center">
+                <span
+                  :class="$vuetify.display.xs ? 'text-body-1' : 'text-h6'"
+                  class="font-weight-black text-deep-orange-darken-2"
+                >
+                  {{ item.captiveRecord }}
+                </span>
+              </td>
+
+              <td class="text-center d-none d-sm-table-cell">{{ item.wildRecord || '-' }}</td>
+              <td class="text-body-2 text-grey-darken-1 d-none d-md-table-cell">
+                {{ item.japaneseName }}
+              </td>
+              <td class="text-center text-body-2 d-none d-sm-table-cell">{{ item.year }}</td>
+            </tr>
+          </tbody>
+        </v-table>
+      </v-card>
     </div>
-
-    <v-row v-for="(group, genus) in genusClassification" :key="genus" class="mb-16">
-      <v-col cols="12">
-        
-        <div class="d-flex align-center mb-6">
-          <v-icon icon="mdi-bug" color="primary" class="mr-3" size="large"></v-icon>
-          <h2 class="text-h4 font-weight-bold">{{ genus }}</h2>
-          <v-spacer></v-spacer>
-          <v-chip color="primary" variant="tonal" size="small">
-            共 {{ group.length }} 筆紀錄
-          </v-chip>
-        </div>
-
-        <v-card border flat class="rounded-xl overflow-hidden">
-          <v-table hover density="comfortable">
-            <thead>
-              <tr class="bg-grey-lighten-4">
-                <th class="text-left font-weight-bold" style="width: 20%;">中文俗名</th>
-                <th class="text-left font-weight-bold" style="width: 30%;">學名 / 亞種名</th>
-                <th class="text-center font-weight-bold">飼育紀錄</th>
-                <th class="text-center font-weight-bold">野生紀錄</th>
-                <th class="text-left font-weight-bold">日文名稱</th>
-                <th class="text-center font-weight-bold">登錄年</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in group" :key="item._id">
-                
-                <td class="font-weight-bold text-primary">
-                  {{ shouldShowName(group, index) ? item.commonName : '' }}
-                </td>
-
-                <td class="font-italic text-grey-darken-3">
-                  {{ item.scientificName }}
-                </td>
-
-                <td class="text-center">
-                  <span class="text-h6 font-weight-bold text-deep-orange-darken-1">
-                    {{ item.captiveRecord }}
-                  </span>
-                  <small class="ml-1 text-grey">mm</small>
-                </td>
-
-                <td class="text-center">
-                  <span class="font-weight-medium">{{ item.wildRecord || '-' }}</span>
-                  <small v-if="item.wildRecord" class="ml-1 text-grey">mm</small>
-                </td>
-
-                <td class="text-body-2 text-grey-darken-1">
-                  {{ item.japaneseName }}
-                </td>
-
-                <td class="text-center text-body-2 font-mono">
-                  {{ item.year }}
-                </td>
-              </tr>
-            </tbody>
-          </v-table>
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <v-row justify="center" class="mt-10">
-      <v-col cols="12" md="8">
-        <v-card border class="pa-8 rounded-xl" flat color="grey-lighten-5">
-          <div class="d-flex align-center mb-6">
-            <v-icon icon="mdi-comment-text-multiple-outline" class="mr-2"></v-icon>
-            <h3 class="text-h5">發表研究評論</h3>
-          </div>
-          <v-textarea
-            auto-grow
-            counter
-            label="針對此屬的紀錄發表你的看法..."
-            rows="4"
-            variant="solo-filled"
-            flat
-            class="mb-4"
-          />
-          <div class="d-flex justify-end">
-            <v-btn color="black" size="large" prepend-icon="mdi-send" rounded="pill">
-              送出評論
-            </v-btn>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
   </v-container>
 </template>
 
@@ -114,10 +113,7 @@ async function fetchRecords() {
 const genusClassification = computed(() => {
   // genusClassification 是一個依照屬名分類的函式，最終會return出一個有很多key名稱為屬名的物件。
   const sortedBekuwaRecords = [...rawBekuwaRecords.value].sort(
-    (
-      a,
-      b
-    ) => a.scientificName.localeCompare(b.scientificName) // 將原始資料按學名排序
+    (a, b) => a.scientificName.localeCompare(b.scientificName) // 將原始資料按學名排序
   )
 
   const groupedRecords = {} // 先開一個空物件
