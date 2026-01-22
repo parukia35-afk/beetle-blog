@@ -3,6 +3,8 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import routeRecord from './routes/record.js'
+import routeUser from './routes/user.js'
+import './passport/passport.js'
 
 mongoose
   .connect(process.env.DB_URL)
@@ -20,6 +22,7 @@ mongoose
   app.use(express.json()) // 讓express看得懂JSON
 
   app.use('/record',routeRecord)
+  app.use('/user',routeUser)
 
   app.listen(process.env.PORT || 4000, () => {
   console.log('伺服器啟動 http://localhost:4000')
