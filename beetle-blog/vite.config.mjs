@@ -22,7 +22,7 @@ export default defineConfig({
     }),
     // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
     Vuetify({
-      autoImport: true,
+      autoImport: true, // 用到甚麼vuetify元件就幫我import進來
       styles: {
         configFile: 'src/styles/settings.scss',
       },

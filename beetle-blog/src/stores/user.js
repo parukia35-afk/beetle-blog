@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import axios from 'axios'
+import serviceUser from '@/services/user'
 
 export const useUserStore = defineStore('user', () => {
   // 1. State: 存資料
@@ -17,7 +17,7 @@ export const useUserStore = defineStore('user', () => {
   // 註冊邏輯
   async function register(form) {
     try {
-      await axios.post('http://localhost:4000/user/register', form)
+      await serviceUser.register(form)
       return { success: true, message: '註冊成功' }
     } catch (error) {
       return { success: false, message: error?.response?.data?.message || '註冊失敗' }
@@ -27,7 +27,7 @@ export const useUserStore = defineStore('user', () => {
   // 登入邏輯
   async function login(form) {
     try {
-      const { data } = await axios.post('http://localhost:4000/user/login', form)
+      const { data } = await serviceUser.login(form)
       // 登入成功，把後端回傳的資料存進 State
       token.value = data.result.token
       account.value = data.result.account
