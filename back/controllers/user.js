@@ -7,7 +7,7 @@ export const register = async (req, res) => {
   try {
     const result = new User(req.body);
     await result.save();
-    res.status(StatusCodes.CREATED).json({ message:'註冊成功' });
+    res.status(StatusCodes.CREATED).json({ message: "註冊成功" });
   } catch (error) {
     console.log("USER_CONTROLLER", error);
     if (error.name === "ValidationError") {
@@ -46,10 +46,18 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = async(req,res)=>{
+export const logout = async (req, res) => {
   try {
-    
+    const i = req.user.tokens.indexOf(req.token);
+    req.user.tokens.splice(i, 1);
+    await req.user.save();
+    res.status(StatusCodes.OK).json({
+      result: {},
+    });
   } catch (error) {
-    
+    console.log(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "伺服器錯誤",
+    });
   }
-}
+};
