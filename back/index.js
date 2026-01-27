@@ -24,7 +24,7 @@ mongoose
 
   app.use('/record',routeRecord)
   app.use('/user',routeUser)
-  app.use('product',routeProduct)
+  app.use('/product',routeProduct)
 
   app.listen(process.env.PORT || 4000, () => {
   console.log('伺服器啟動 http://localhost:4000')

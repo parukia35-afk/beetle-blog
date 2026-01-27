@@ -30,14 +30,15 @@
             :search="search"
             :loading="loading"
             hover
+            class="product-table"
           >
             <template #[`item.image`]="{ item }">
               <v-img
-                :src="item.image ? `http://localhost:4000/uploads/${item.image}` : 'https://placehold.co/100x100?text=No+Image'"
+                :src="item.imageUrl || 'https://placehold.co/100x100?text=No+Image'"
                 width="60"
                 height="60"
                 cover
-                class="rounded-lg my-2"
+                class="rounded-lg my-2 border"
               />
             </template>
 
@@ -69,13 +70,18 @@
         <v-card-text class="pa-6 pt-0">
           <v-form ref="formRef">
             <v-row>
+              <v-col cols="12" class="d-flex flex-column align-center" v-if="form.imageUrl">
+                <div class="text-caption mb-2 text-grey">當前商品圖片：</div>
+                <v-img :src="form.imageUrl" max-height="200" width="200" aspect-ratio="1" class="rounded-lg border mb-4" cover />
+              </v-col>
+
               <v-col cols="12" md="8">
                 <v-text-field v-model="form.name" label="商品名稱" variant="outlined" :rules="[rules.required]" />
               </v-col>
               <v-col cols="12" md="4">
                 <v-select
                   v-model="form.category"
-                  :items="['成蟲', '幼蟲', '耗材&工具', '其他']"
+                  :items="categories"
                   label="分類"
                   variant="outlined"
                   :rules="[rules.required]"
@@ -85,7 +91,7 @@
                 <v-text-field v-model.number="form.price" label="價格" type="number" prefix="$" variant="outlined" :rules="[rules.required]" />
               </v-col>
               <v-col cols="12" md="6">
-                <v-switch v-model="form.sell" label="上架狀態" color="success" hide-details inset />
+                <v-switch v-model="form.sell" label="上架狀態" color="success" hide-details inset class="mt-2" />
               </v-col>
               <v-col cols="12">
                 <v-textarea v-model="form.description" label="商品描述" variant="outlined" rows="3" :rules="[rules.required]" />
@@ -93,7 +99,7 @@
               <v-col cols="12">
                 <v-file-input
                   v-model="form.image"
-                  label="商品圖片 (建議比例 1:1)"
+                  :label="editedId ? '更換商品圖片 (不更換請留空)' : '上傳商品圖片'"
                   accept="image/*"
                   prepend-icon="mdi-camera"
                   variant="outlined"
@@ -120,6 +126,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import serviceProduct from '@/services/product'
 
+// --- 狀態管理 ---
 const loading = ref(false)
 const submitting = ref(false)
 const dialog = ref(false)
@@ -128,6 +135,7 @@ const products = ref([])
 const editedId = ref(null)
 const formRef = ref(null)
 
+// --- 設定檔 ---
 const headers = [
   { title: '圖片', key: 'image', sortable: false },
   { title: '商品名稱', key: 'name', sortable: true },
@@ -136,6 +144,8 @@ const headers = [
   { title: '狀態', key: 'sell', align: 'center' },
   { title: '操作', key: 'actions', align: 'end', sortable: false },
 ]
+
+const categories = ['成蟲', '幼蟲', '耗材||工具', '其他']
 
 const rules = {
   required: v => !!v || '此欄位必填'
@@ -147,11 +157,15 @@ const initialForm = {
   description: '',
   category: '成蟲',
   sell: false,
-  image: null // 這裡存 File 物件
+  image: null,
+  imageUrl: '' // 用於顯示雲端網址的預覽
 }
 
 const form = reactive({ ...initialForm })
 
+// --- 函式邏輯 ---
+
+// 1. 取得商品清單
 const fetchProducts = async () => {
   loading.value = true
   try {
@@ -163,32 +177,39 @@ const fetchProducts = async () => {
   loading.value = false
 }
 
+// 2. 開啟彈窗
 const openDialog = (item) => {
   if (item) {
     editedId.value = item._id
-    Object.assign(form, item)
-    form.image = null // 編輯時預設不更改圖片，除非使用者重新選擇
+    Object.assign(form, item) // 同步所有欄位(包含 imageUrl)
+    form.image = null         // 檔案輸入框重置為空
   } else {
     editedId.value = null
-    Object.assign(form, initialForm)
+    Object.assign(form, initialForm) // 重置為初始狀態
   }
   dialog.value = true
 }
 
+// 3. 提交資料 (新增/更新)
 const submit = async () => {
   const { valid } = await formRef.value.validate()
   if (!valid) return
 
   submitting.value = true
   
-  // 重要：因為有檔案，必須使用 FormData
+  // 使用 FormData 包裝包含檔案的資料
   const fd = new FormData()
   fd.append('name', form.name)
   fd.append('price', form.price)
   fd.append('description', form.description)
   fd.append('category', form.category)
   fd.append('sell', form.sell)
-  if (form.image) fd.append('image', form.image) // 如果有選新圖才傳
+  if (form.image) {
+  // 如果是陣列就取第一個，不是陣列就直接用
+  const file = Array.isArray(form.image) ? form.image[0] : form.image
+  fd.append('image', file)
+  console.log('確認有把檔案塞進 FormData:', file)
+}
 
   try {
     if (editedId.value) {
@@ -196,7 +217,7 @@ const submit = async () => {
     } else {
       await serviceProduct.createProduct(fd)
     }
-    fetchProducts()
+    await fetchProducts() // 重新拉取最新資料
     dialog.value = false
   } catch (error) {
     alert(error.response?.data?.message || '儲存失敗')
@@ -204,11 +225,12 @@ const submit = async () => {
   submitting.value = false
 }
 
+// 4. 刪除商品
 const deleteItem = async (item) => {
   if (confirm(`確定要刪除商品 ${item.name} 嗎？`)) {
     try {
       await serviceProduct.deleteProduct(item._id)
-      fetchProducts()
+      await fetchProducts()
     } catch (error) {
       alert('刪除失敗')
     }
@@ -217,3 +239,10 @@ const deleteItem = async (item) => {
 
 onMounted(fetchProducts)
 </script>
+
+<route lang="yaml">
+meta:
+  layout: adminLayout
+  login: true
+  admin: true
+</route>

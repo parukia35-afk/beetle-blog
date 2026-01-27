@@ -7,4 +7,7 @@ const router = Router();
 
 router.post("/", auth.token, auth.admin, upload, product.create);
 router.get("/all", auth.token, auth.admin, product.getAll);
-router.patch("/:id", auth.token, auth.admin.upload, product.update);
+router.patch("/:id", auth.token, auth.admin,upload, product.update);
+router.delete("/:id", auth.token, auth.admin, product.remove);
+
+export default router
