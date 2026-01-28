@@ -31,15 +31,8 @@
             variant="outlined"
           />
 
-          <v-textarea
-            v-model="form.content"
-            label="HTML 內容 (請在這裡手動輸入標籤測試)"
-            hint="範例：<h2>標題</h2><p>這是<strong>粗體</strong></p>"
-            persistent-hint
-            rows="10"
-            variant="outlined"
-            placeholder="請在這裡輸入像 <h2>...</h2> 這樣的 HTML 碼"
-          />
+          <label class="d-block mb-2">文章內容</label>
+          <TiptapEditor v-model="form.content" />
 
           <v-btn color="success" size="large" type="submit" block class="mt-4">
             發布文章並存入資料庫
@@ -53,6 +46,7 @@
 <script setup>
 import { reactive } from 'vue'
 import serviceArticle from '@/services/article'
+import TiptapEditor from '@/components/TiptapEditor.vue'
 
 const form = reactive({
   title: '',
@@ -69,9 +63,9 @@ const submit = async () => {
     fd.append('content', form.content) // 這裡就是傳送那一堆 HTML 碼
     fd.append('category', form.category)
     fd.append('isCompleted', form.isCompleted)
-    
+
     // 正確傳送陣列標籤
-    form.aboutSpecies.forEach(s => fd.append('aboutSpecies', s))
+    form.aboutSpecies.forEach((s) => fd.append('aboutSpecies', s))
 
     await serviceArticle.createArticle(fd)
     alert('存入成功！快去 MongoDB 查看 content 欄位吧！')
