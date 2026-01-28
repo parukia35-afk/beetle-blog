@@ -67,7 +67,7 @@ const adminMenuItems = [
   { title: '管理主頁', icon: 'mdi-view-dashboard', path: '/admin' },
   { title: '甲蟲紀錄管理', icon: 'mdi-book-open-variant', path: '/admin/recordAdmin' },
   { title: '商品管理', icon: 'mdi-shopping', path: '/admin/productAdmin' },
-  { title: '文章發佈', icon: 'mdi-pencil-box-multiple', path: '/admin/articles' }
+  { title: '文章發佈', icon: 'mdi-pencil-box-multiple', path: '/admin/articleAdmin' }
 ]
 
 const logout = async () => {
