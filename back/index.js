@@ -5,6 +5,7 @@ import cors from 'cors'
 import routeRecord from './routes/record.js'
 import routeUser from './routes/user.js'
 import routeProduct from './routes/product.js'
+import routeArticle from './routes/article.js'
 import './passport/passport.js'
 
 mongoose
@@ -25,6 +26,7 @@ mongoose
   app.use('/record',routeRecord)
   app.use('/user',routeUser)
   app.use('/product',routeProduct)
+  app.use('/article',routeArticle)
 
   app.listen(process.env.PORT || 4000, () => {
   console.log('伺服器啟動 http://localhost:4000')

@@ -21,9 +21,11 @@ declare module 'vue-router/auto-routes' {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/AboutView': RouteRecordInfo<'/AboutView', '/about', Record<never, never>, Record<never, never>>,
     '/admin/': RouteRecordInfo<'/admin/', '/admin', Record<never, never>, Record<never, never>>,
+    '/admin/articleAdmin': RouteRecordInfo<'/admin/articleAdmin', '/admin/articleAdmin', Record<never, never>, Record<never, never>>,
     '/admin/productAdmin': RouteRecordInfo<'/admin/productAdmin', '/admin/productAdmin', Record<never, never>, Record<never, never>>,
     '/admin/recordAdmin': RouteRecordInfo<'/admin/recordAdmin', '/admin/recordAdmin', Record<never, never>, Record<never, never>>,
     '/ArticlesView': RouteRecordInfo<'/ArticlesView', '/articles', Record<never, never>, Record<never, never>>,
+    '/articles/[id]': RouteRecordInfo<'/articles/[id]', '/articles/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/DailyView': RouteRecordInfo<'/DailyView', '/daily', Record<never, never>, Record<never, never>>,
     '/RecordView': RouteRecordInfo<'/RecordView', '/records', Record<never, never>, Record<never, never>>,
     '/ShareView': RouteRecordInfo<'/ShareView', '/share', Record<never, never>, Record<never, never>>,
@@ -53,6 +55,10 @@ declare module 'vue-router/auto-routes' {
       routes: '/admin/'
       views: never
     }
+    'src/pages/admin/articleAdmin.vue': {
+      routes: '/admin/articleAdmin'
+      views: never
+    }
     'src/pages/admin/productAdmin.vue': {
       routes: '/admin/productAdmin'
       views: never
@@ -63,6 +69,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/ArticlesView.vue': {
       routes: '/ArticlesView'
+      views: never
+    }
+    'src/pages/articles/[id].vue': {
+      routes: '/articles/[id]'
       views: never
     }
     'src/pages/DailyView.vue': {
