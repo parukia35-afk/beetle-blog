@@ -53,8 +53,20 @@
             </template>
 
             <template #[`item.actions`]="{ item }">
-              <v-btn icon="mdi-pencil" variant="text" color="blue" size="small" @click="openDialog(item)" />
-              <v-btn icon="mdi-delete" variant="text" color="red" size="small" @click="deleteItem(item)" />
+              <v-btn
+                icon="mdi-pencil"
+                variant="text"
+                color="blue"
+                size="small"
+                @click="openDialog(item)"
+              />
+              <v-btn
+                icon="mdi-delete"
+                variant="text"
+                color="red"
+                size="small"
+                @click="deleteItem(item)"
+              />
             </template>
           </v-data-table>
         </v-card>
@@ -66,17 +78,29 @@
         <v-card-title class="pa-6 font-weight-bold text-h5">
           {{ editedId ? '編輯商品資訊' : '新增商品' }}
         </v-card-title>
-        
+
         <v-card-text class="pa-6 pt-0">
           <v-form ref="formRef">
             <v-row>
               <v-col cols="12" class="d-flex flex-column align-center" v-if="form.imageUrl">
                 <div class="text-caption mb-2 text-grey">當前商品圖片：</div>
-                <v-img :src="form.imageUrl" max-height="200" width="200" aspect-ratio="1" class="rounded-lg border mb-4" cover />
+                <v-img
+                  :src="form.imageUrl"
+                  max-height="200"
+                  width="200"
+                  aspect-ratio="1"
+                  class="rounded-lg border mb-4"
+                  cover
+                />
               </v-col>
 
               <v-col cols="12" md="8">
-                <v-text-field v-model="form.name" label="商品名稱" variant="outlined" :rules="[rules.required]" />
+                <v-text-field
+                  v-model="form.name"
+                  label="商品名稱"
+                  variant="outlined"
+                  :rules="[rules.required]"
+                />
               </v-col>
               <v-col cols="12" md="4">
                 <v-select
@@ -88,13 +112,33 @@
                 />
               </v-col>
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="form.price" label="價格" type="number" prefix="$" variant="outlined" :rules="[rules.required]" />
+                <v-text-field
+                  v-model.number="form.price"
+                  label="價格"
+                  type="number"
+                  prefix="$"
+                  variant="outlined"
+                  :rules="[rules.required]"
+                />
               </v-col>
               <v-col cols="12" md="6">
-                <v-switch v-model="form.sell" label="上架狀態" color="success" hide-details inset class="mt-2" />
+                <v-switch
+                  v-model="form.sell"
+                  label="上架狀態"
+                  color="success"
+                  hide-details
+                  inset
+                  class="mt-2"
+                />
               </v-col>
               <v-col cols="12">
-                <v-textarea v-model="form.description" label="商品描述" variant="outlined" rows="3" :rules="[rules.required]" />
+                <v-textarea
+                  v-model="form.description"
+                  label="商品描述"
+                  variant="outlined"
+                  rows="3"
+                  :rules="[rules.required]"
+                />
               </v-col>
               <v-col cols="12">
                 <v-file-input
@@ -142,13 +186,13 @@ const headers = [
   { title: '分類', key: 'category' },
   { title: '價格', key: 'price', align: 'center' },
   { title: '狀態', key: 'sell', align: 'center' },
-  { title: '操作', key: 'actions', align: 'end', sortable: false },
+  { title: '操作', key: 'actions', align: 'end', sortable: false }
 ]
 
-const categories = ['成蟲', '幼蟲', '耗材||工具', '其他']
+const categories = ['成蟲', '幼蟲', '耗材 | 工具', '其他']
 
 const rules = {
-  required: v => !!v || '此欄位必填'
+  required: (v) => !!v || '此欄位必填'
 }
 
 const initialForm = {
@@ -182,7 +226,7 @@ const openDialog = (item) => {
   if (item) {
     editedId.value = item._id
     Object.assign(form, item) // 同步所有欄位(包含 imageUrl)
-    form.image = null         // 檔案輸入框重置為空
+    form.image = null // 檔案輸入框重置為空
   } else {
     editedId.value = null
     Object.assign(form, initialForm) // 重置為初始狀態
@@ -196,7 +240,7 @@ const submit = async () => {
   if (!valid) return
 
   submitting.value = true
-  
+
   // 使用 FormData 包裝包含檔案的資料
   const fd = new FormData()
   fd.append('name', form.name)
@@ -205,11 +249,11 @@ const submit = async () => {
   fd.append('category', form.category)
   fd.append('sell', form.sell)
   if (form.image) {
-  // 如果是陣列就取第一個，不是陣列就直接用
-  const file = Array.isArray(form.image) ? form.image[0] : form.image
-  fd.append('image', file)
-  console.log('確認有把檔案塞進 FormData:', file)
-}
+    // 如果是陣列就取第一個，不是陣列就直接用
+    const file = Array.isArray(form.image) ? form.image[0] : form.image
+    fd.append('image', file)
+    console.log('確認有把檔案塞進 FormData:', file)
+  }
 
   try {
     if (editedId.value) {

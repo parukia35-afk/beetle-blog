@@ -25,7 +25,7 @@ const productSchema = new Schema(
     category: {
       type: String,
       enum: {
-        values: ["成蟲", "幼蟲", "耗材||工具", "其他"],
+        values: ["成蟲", "幼蟲", "耗材 | 工具", "其他"],
         message: "無效的商品類別",
       },
       required: [true, "分類必填"],
@@ -47,9 +47,9 @@ const productSchema = new Schema(
 虛擬動態欄位(並不存在資料庫)
 schema.virtual(欄位名稱).get(資料產生方式)
 */
-productSchema.virtual('imageUrl').get(function(){
-  const product = this // this = 現在處理的這筆資料
-  return cloudinary.url(product.image) // 用 cloudinary圖片ID 取得圖片網址
-})
+productSchema.virtual("imageUrl").get(function () {
+  const product = this; // this = 現在處理的這筆資料
+  return cloudinary.url(product.image); // 用 cloudinary圖片ID 取得圖片網址
+});
 
 export default model("Products", productSchema);

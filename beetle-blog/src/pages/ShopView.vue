@@ -27,13 +27,7 @@
         </v-row>
 
         <v-row v-else-if="filteredProducts.length > 0">
-          <v-col
-            v-for="product in filteredProducts"
-            :key="product._id"
-            cols="12"
-            md="4"
-            sm="6"
-          >
+          <v-col v-for="product in filteredProducts" :key="product._id" cols="12" md="4" sm="6">
             <v-card border class="h-100 d-flex flex-column rounded-lg" flat hover>
               <v-img
                 cover
@@ -96,7 +90,7 @@ const loading = ref(true)
 const category = ref('所有商品')
 
 // 注意：這裡的名稱要對應你資料庫 enum 的定義
-const filterItems = ['所有商品', '成蟲', '幼蟲', '耗材||工具', '其他']
+const filterItems = ['所有商品', '成蟲', '幼蟲', '耗材 | 工具', '其他']
 
 // --- 資料獲取 ---
 const fetchProducts = async () => {
@@ -113,7 +107,7 @@ const fetchProducts = async () => {
 // --- 篩選邏輯 ---
 const filteredProducts = computed(() => {
   if (category.value === '所有商品') return products.value
-  return products.value.filter(p => p.category === category.value)
+  return products.value.filter((p) => p.category === category.value)
 })
 
 // --- 動作 ---

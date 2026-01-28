@@ -12,13 +12,7 @@
     <h2 class="text-h4 font-weight-bold my-8 text-left">最新文章</h2>
 
     <v-row>
-      <v-col
-        v-for="article in latestArticles"
-        :key="article.id"
-        cols="12"
-        md="4"
-        sm="6"
-      >
+      <v-col v-for="article in latestArticles" :key="article.id" cols="12" md="4" sm="6">
         <v-card class="mx-auto" hover max-width="400">
           <v-img cover height="200px" :src="article.image" />
 
@@ -43,39 +37,41 @@
 </template>
 
 <script setup>
-  const slides = [
-    {
-      src: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?q=80&w=2000', // 示意圖：森林感
-      text: '探索甲蟲的奧秘',
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?q=80&w=2000', // 示意圖：微距感
-      text: 'BEKUWA 世界紀錄區',
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2000', // 示意圖：自然環境
-      text: '我的飼育日常',
-    },
-  ]
+import caresoul_1 from '../assets/caresoul-1.JPG'
 
-  const latestArticles = [
-    {
-      id: 1,
-      title: '【飼育心得】長戟大兜蟲三齡幼蟲管理',
-      excerpt: '對於 D.h.h 來說，三齡末期的水分控制與食材營養是決定成蟲體型關鍵...',
-      image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?q=80&w=800',
-    },
-    {
-      id: 2,
-      title: '2024 BEKUWA 世界紀錄大賽速報',
-      excerpt: '今年的紀錄再度突破極限，讓我們來看看哪些物種又刷新了長度極限...',
-      image: 'https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?q=80&w=800',
-    },
-    {
-      id: 3,
-      title: '入門必讀：如何布置你的第一間產房',
-      excerpt: '選對產卵木與發酵細土，能讓你事半功倍，這篇文章教你最簡單的配置法...',
-      image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800',
-    },
-  ]
+const slides = [
+  {
+    src: caresoul_1, // 自訂輪播圖
+    text: '探索甲蟲的奧秘'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?q=80&w=2000', // 示意圖：微距感
+    text: 'BEKUWA 世界紀錄區'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2000', // 示意圖：自然環境
+    text: '我的飼育日常'
+  }
+]
+
+const latestArticles = [
+  {
+    id: 1,
+    title: '【飼育心得】長戟大兜蟲三齡幼蟲管理',
+    excerpt: '對於 D.h.h 來說，三齡末期的水分控制與食材營養是決定成蟲體型關鍵...',
+    image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?q=80&w=800'
+  },
+  {
+    id: 2,
+    title: '2024 BEKUWA 世界紀錄大賽速報',
+    excerpt: '今年的紀錄再度突破極限，讓我們來看看哪些物種又刷新了長度極限...',
+    image: 'https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?q=80&w=800'
+  },
+  {
+    id: 3,
+    title: '入門必讀：如何布置你的第一間產房',
+    excerpt: '選對產卵木與發酵細土，能讓你事半功倍，這篇文章教你最簡單的配置法...',
+    image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800'
+  }
+]
 </script>
